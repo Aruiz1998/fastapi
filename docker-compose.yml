@@ -1,0 +1,20 @@
+services:
+  app:
+    build: .
+    container_name: fastapi-server
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80 --reload
+    ports: 
+      - "80:80"
+    volumes:
+      - .:/code
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:16.4
+    environment:
+      - POSTGRES_USER=user  # Optional, default is 'postgres'
+      - POSTGRES_PASSWORD=password  # REQUIRED: Set the password here
+      - POSTGRES_DB=postgres  # Optional, creates a new default database 
+    ports:
+      - "5432:5432"
